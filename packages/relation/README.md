@@ -51,9 +51,9 @@ await loadDataState.content(await result);
 ```
 - StreamedState contain any data type.
 - EntityStreamedState, in addition to storing data, also contains 3 standard states
--- loading - load data 
--- error - error of load
--- data - data load success
+    - loading - load data 
+    - error - error of load
+    - data - data load success
 
 These states can help you design your implementation of a responsive interface.
 
