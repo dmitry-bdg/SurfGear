@@ -62,21 +62,46 @@ We will resolve this collision in one of the upcoming releases.
 
 `Action` is a good way to notify consumers about every event coming from the UI.
 
-First you need to instantiate `Action`.
+Create an `Action` class instance. You can pass data with `Action`'s events, so you need to specify the concrete type of `Action` while declaring it.
 
 ```dart
- final logoutAction = Action<void>();
+final logoutAction = Action<void>();
+
+final addItemToCartAction = Action<Item>();
 ```
 
-After initialization, you should bind the methods that will be executed upon performing any actions
+Find the place where you're going to handle events triggered by your `Action`. Subscribe to the event stream, which you can access through the `stream` property.
 
 ```dart
-    incrementAction.stream.listen(
-      (_) => increment()
-    );
+logoutAction.stream.listen(
+  (_) => logout()
+);
 
-    reloadAction.stream.listen((_) => _load());
+addItemToCartAction.stream.listen(
+  (item) => addItemToCart(item)
+);
 ```
+
+Now you can trigger an event through an `Action` instance from anywhere this way:
+
+```dart
+logoutAction.accept();
+
+addItemToCartAction.accept(item);
+```
+
+Or even easier:
+
+```dart
+TextButton(
+  onPressed: logoutAction,
+  ...
+),
+```
+
+### StreamedState
+
+
 
 
 
