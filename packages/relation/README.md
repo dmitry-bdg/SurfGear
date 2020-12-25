@@ -19,23 +19,55 @@ Two-way communication channels for transferring data between different architect
 - React to the data state changes and redraw UI using `StreamedState` together with `StreamedStateBuilder` and its variations;
 - Manage the screen state in an easy way with a special stream that handles three predefined states: data, loading, error.
 
+## Warning
+
+> :warning: You may run into naming collisions when using this package.
+
+We are using `Action` class, but there is already a class with the exact same name in the Flutter SDK, which leads to naming collisions. We recommend you to use one of 2 workarounds to avoid this issue. In the near future this class will be renamed.
+
+### Preferred solution
+
+The preferable solution is specifying a prefix for relation library and use it for accessing Action class.
+
+```dart
+import 'package:relation/relation.dart' as r;
+```
+
+In that case it would be necessary to use your prefix to specify the right class while reffering to it.
+
+```dart
+final action = r.Action();
+```
+
+### Optional solution
+
+Another option is hiding Action class from Flutter SDK.
+
+```dart
+import 'package:flutter/material.dart' hide Action;
+import 'package:flutter/widgets.dart' hide Action;
+```
+
+This solution provides you an ability to call `Action` class from `relation` library without any additional preffixes, but deprives you of the opportunity to reffer *Action* class from the SDK.
+
+```dart
+final action = Action();
+```
+
+We will resolve this collision in one of the upcoming releases.
+
 ## Usage
 
-### Initialization
-First you need to initialize Action and StreamedState
-```dart 
- final incrementAction = Action();
- final incrementState = StreamedState<int>();
- 
- final reloadAction = Action();
- final loadDataState = EntityStreamedState<int>();
-```
-During initialization, for StreamedState and EntityStreamedState, you can set initial values that will be displayed when the widget is initialized.
+### Action
+
+`Action` is a good way to notify consumers about every event coming from the UI.
+
+First you need to instantiate `Action`.
+
 ```dart
-final incrementState = r.StreamedState<int>(0);
-final loadDataState = r.EntityStreamedState<int>(r.EntityState(isLoading: true));
+ final logoutAction = Action<void>();
 ```
-### Action binding
+
 After initialization, you should bind the methods that will be executed upon performing any actions
 
 ```dart
@@ -45,6 +77,25 @@ After initialization, you should bind the methods that will be executed upon per
 
     reloadAction.stream.listen((_) => _load());
 ```
+
+
+
+
+
+
+
+
+During initialization, for StreamedState and EntityStreamedState, you can set initial values that will be displayed when the widget is initialized.
+```dart
+final incrementState = r.StreamedState<int>(0);
+final loadDataState = r.EntityStreamedState<int>(r.EntityState(isLoading: true));
+```
+
+final incrementState = StreamedState<int>();
+final reloadAction = Action();
+ final loadDataState = EntityStreamedState<int>();
+### Action binding
+
 ### State management
 When a user performs an action, it entails a change in the state of the program.
 ```dart
