@@ -58,7 +58,9 @@ We will resolve this collision in one of the upcoming releases.
 
 ## Usage
 
-### Action
+### Notify and react
+
+#### Action
 
 `Action` is a good way to notify consumers about every event coming from the UI.
 
@@ -99,7 +101,7 @@ TextButton(
 ),
 ```
 
-### StreamedState
+#### StreamedState
 
 With `StreamedState` you can notify consumers of data changes.
 
@@ -125,7 +127,34 @@ To notify all consumers of data changes, you can emit the actual data to the `St
 userBalanceState.accept(100);
 ```
 
+In fact, you can use `Action`s and `StreamedState`s to communicate between any objects in your application. However, we recommend using them to connect the UI and presentation layers.
 
+### Update UI
+
+#### StreamStateBuilder
+
+`StreamStateBuilder` is a widget that builds itself based on the latest snapshot of interaction with a `StreamedState`. The `StreamStateBuilder`'s behavior is almost the same as the standard `StreamBuilder` with the difference that it accepts `StreamedState` instead of the usual `Stream`, thus simplifying the initial data setup.
+
+`StreamStateBuilder` rebuilds its widget subtree each time as its associated `StreamedState` emits a new value. This is the recommended way to organize your UI layer. It can save you from multiple `setState()` function calls.
+
+```dart
+Container(
+  child: StreamedStateBuilder(
+    streamedState: userBalanceState,
+    builder: (ctx, balance) => _buildUserBalanceWidget(balance),
+  ),
+)
+```
+
+### State Management
+
+You can build state management solution for your Flutter app using all of the above components.
+
+We recommend using **Relation** package in conjunction with [MWWM architecture](https://pub.dev/packages/mwwm).
+
+- Use `Action`s to notify the presentation layer about all the UI events (button taps, pull-to-refresh triggers, swipes, or other gestures detections);
+- Use `StreamedState`s to report any data changes to the UI layer;
+- Let `StreamedStateBuilder` manage the UI state for you. It will rebuild all its child widgets right after it detects any newly emitted data in the associated `StreamedState`.
 
 
 
@@ -165,12 +194,7 @@ These states can help you design your implementation of a responsive interface.
 ### Update UI
 To listen for changes happening in StreamedState and EntityStreamedState use the EntityStateBuilder:
 
-```dart
-StreamedStateBuilder(
-streamedState: incrementState,
-builder: (ctx, count) => Text('number of count: $count'),
-)
-```
+
 StreamedStateBuilder also supports receiving states _loading_, _error_ and _data_
 ```dart
 EntityStateBuilder<int>(
