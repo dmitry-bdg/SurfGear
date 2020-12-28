@@ -156,6 +156,24 @@ We recommend using **Relation** package in conjunction with [MWWM architecture](
 - Use `StreamedState`s to report any data changes to the UI layer;
 - Let `StreamedStateBuilder` manage the UI state for you. It will rebuild all its child widgets right after it detects any newly emitted data in the associated `StreamedState`.
 
+## Extra units
+
+The **Relation** package provides you not only some basic components for common use-cases, but even more highly specialized classes for solving specific problems.
+
+### Extra Actions
+
+#### ScrollOffsetActon
+
+#### TextEditingActon
+
+#### ControllerActon
+
+### Extra StreamedStates
+
+#### EntityStreamedState + EntityStateBuilder
+
+#### TextFieldStreamedState + TextFieldStateBuilder
+
 
 
 
@@ -243,22 +261,35 @@ SingleChildScrollView(
     controller: scrollAction.controller,
 )
 ```
+
 ## Installation
-```
+
+Add `relation` to your `pubspec.yaml` file:
+
+```yaml
 dependencies:
-  relation: ^0.0.2
+  relation: any
 ```
+
+You can use both `stable` and `dev` versions of the package listed above in the badges bar.
+
 ## Changelog
+
 All notable changes to this project will be documented in [this file](./CHANGELOG.md).
+
 ## Issues
+
 For issues, file directly in the [main SurfGear repo](https://github.com/surfstudio/SurfGear).
+
 ## Contribute
+
 If you would like to contribute to the package (e.g. by improving the documentation, solving a bug or adding a cool new feature), please review our [contribution guide](../../CONTRIBUTING.md) first and send us your pull request.
 
-You PR's are always welcome.
+You PRs are always welcome.
+
 ## How to reach us
 
-Please, feel free to ask any questions about this package. Join our community chat on Telegram. We speak English and Russian.
+Please feel free to ask any questions about this package. Join our community chat on Telegram. We speak English and Russian.
 
 [![Telegram](https://img.shields.io/badge/chat-on%20Telegram-blue.svg)](https://t.me/SurfGear)
 
