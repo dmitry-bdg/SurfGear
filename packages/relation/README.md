@@ -101,9 +101,29 @@ TextButton(
 
 ### StreamedState
 
+With `StreamedState` you can notify consumers of data changes.
 
+Create a `StreamedState` class instance. `StreamedState` constructor allows you to set the initial value that the consumer will receive as soon as it subscribes to the `StreamedState`. You need to specify the specific data type that your `StreamedState` will handle.
 
+```dart
+final userBalanceState = StreamedState<int>(0);
 
+final itemsInCartState = StreamedState<List<Item>>();
+```
+
+You can subscribe to `StreamedState` changes in the same way as with `Action`.
+
+```dart
+userBalanceState.stream.listen(
+  (balance) => showUserBalance(balance)
+);
+```
+
+To notify all consumers of data changes, you can emit the actual data to the `StreamedState` via the `accept()` function.
+
+```dart
+userBalanceState.accept(100);
+```
 
 
 
